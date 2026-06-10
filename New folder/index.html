@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Naba, From Talha 💌</title>
+
+  <!-- Google Fonts: Playfair Display (romantic display) + DM Sans (clean body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+       Palette: deep rose · blush · ivory · gold · midnight-plum bg
+    ============================================================ */
+    :root {
+      --rose:        #C8445A;
+      --deep-rose:   #8B1A2E;
+      --blush:       #F2AEBB;
+      --blush-light: #FCE8EE;
+      --ivory:       #FDF6F0;
+      --gold:        #D4A843;
+      --gold-light:  #F5E09B;
+      --plum-dark:   #1A0A10;
+      --plum-mid:    #2D0E1C;
+      --plum-glass:  rgba(45, 14, 28, 0.55);
+      --white-glass: rgba(255, 255, 255, 0.12);
+      --white-glass2:rgba(255, 255, 255, 0.22);
+      --text-light:  #FDF6F0;
+      --text-muted:  rgba(253, 246, 240, 0.65);
+      --shadow-rose: 0 8px 40px rgba(200, 68, 90, 0.35);
+      --shadow-gold: 0 4px 24px rgba(212, 168, 67, 0.4);
+      --radius-card: 24px;
+      --blur:        blur(18px);
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--plum-dark);
+      color: var(--text-light);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Global animated starfield background ── */
+    #starfield {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      will-change: opacity, transform;
+      animation: twinkle var(--dur, 3s) ease-in-out infinite var(--delay, 0s);
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.15; transform: scale(1); }
+      50%       { opacity: 0.9;  transform: scale(1.4); }
+    }
+
+    /* ── Shared screen wrapper ── */
+    .screen {
+      position: relative;
+      min-height: 100vh;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      z-index: 1;
+    }
+    .screen.active { display: flex; }
+
+    /* ── Glassmorphism card ── */
+    .glass-card {
+      background: var(--white-glass);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-rose), inset 0 1px 0 rgba(255,255,255,0.2);
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 680px;
+      will-change: transform, opacity;
+    }
+
+    /* ── Typography ── */
+    h1, h2, h3 { font-family: 'Playfair Display', serif; }
+    h1 { font-size: clamp(2rem, 6vw, 3.6rem); line-height: 1.15; }
+    h2 { font-size: clamp(1.5rem, 4vw, 2.4rem); line-height: 1.2; }
+    h3 { font-size: clamp(1.1rem, 3vw, 1.6rem); }
+    p  { font-size: 1.05rem; line-height: 1.75; color: var(--text-muted); }
+
+    /* ── Rose gradient text ── */
+    .grad-text {
+      background: linear-gradient(135deg, var(--blush) 0%, var(--gold-light) 50%, var(--blush) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Primary button ── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--rose), var(--deep-rose));
+      color: var(--ivory);
+      border: none; border-radius: 50px;
+      padding: 14px 36px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem; font-weight: 500;
+      cursor: pointer;
+      box-shadow: var(--shadow-rose);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s;
+      will-change: transform;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.04);
+      filter: brightness(1.1);
+      box-shadow: 0 14px 40px rgba(200,68,90,0.55);
+    }
+    .btn-primary:active { transform: translateY(0) scale(0.98); }
+
+    /* ── Divider ── */
+    .divider {
+      width: 60px; height: 3px;
+      background: linear-gradient(90deg, var(--rose), var(--gold));
+      border-radius: 4px;
+      margin: 16px auto 24px;
+    }
+
+    /* ── Floating petals (ambient) ── */
+    .petal {
+      position: fixed;
+      pointer-events: none;
+      font-size: var(--size, 1.4rem);
+      opacity: 0;
+      z-index: 0;
+      will-change: transform, opacity;
+      animation: petalFall var(--dur2, 8s) linear infinite var(--delay2, 0s);
+    }
+    @keyframes petalFall {
+      0%   { opacity: 0;   transform: translateY(-40px) rotate(0deg) scale(0.8); }
+      10%  { opacity: 0.7; }
+      90%  { opacity: 0.4; }
+      100% { opacity: 0;   transform: translateY(110vh) rotate(360deg) scale(1.1); }
+    }
+
+
+    /* ============================================================
+       SCREEN 1 — LOGIN / GATE
+    ============================================================ */
+    #screen-login { background: transparent; }
+
+    .login-emoji {
+      font-size: 4rem;
+      display: block;
+      text-align: center;
+      margin-bottom: 12px;
+      animation: heartbeat 1.6s ease-in-out infinite;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14%       { transform: scale(1.25); }
+      28%       { transform: scale(1); }
+      42%       { transform: scale(1.15); }
+      56%       { transform: scale(1); }
+    }
+
+    .login-sub {
+      text-align: center;
+      font-style: italic;
+      color: var(--blush);
+      margin-top: 8px;
+      font-size: 0.95rem;
+    }
+
+    .login-btns {
+      display: flex; gap: 16px;
+      justify-content: center;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+
+    /* ── "No" button — runs away ── */
+    #btn-no {
+      display: inline-flex; align-items: center;
+      background: var(--white-glass2);
+      backdrop-filter: var(--blur);
+      color: var(--text-muted);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50px;
+      padding: 14px 36px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.18s cubic-bezier(.36,.07,.19,.97), opacity 0.3s;
+      will-change: transform, opacity;
+      position: relative;
+    }
+    #btn-no.shrinking {
+      animation: shrinkAway 0.4s ease forwards;
+    }
+    @keyframes shrinkAway {
+      to { transform: scale(0); opacity: 0; pointer-events: none; }
+    }
+
+
+    /* ============================================================
+       SCREEN 2 — MEMORY LANE CAROUSEL
+    ============================================================ */
+    #screen-memory { background: transparent; }
+
+    .memory-header { text-align: center; margin-bottom: 32px; }
+
+    .carousel-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 680px;
+      overflow: hidden;
+      border-radius: var(--radius-card);
+    }
+
+    .carousel-track {
+      display: flex;
+      will-change: transform;
+      transition: transform 0.55s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      padding: 32px 24px;
+      background: var(--white-glass);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius-card);
+    }
+
+    /* ── Photo placeholders ── */
+    /* =========================================================
+       👇 REPLACE src="photo1.jpg" etc. with your actual photos!
+          All photos should be placed in the same folder as
+          index.html, or use full URLs from Google Photos etc.
+       ========================================================= */
+    .memory-photo {
+      width: 100%;
+      max-height: 340px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.45), 0 0 0 3px rgba(212,168,67,0.3);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      display: block;
+      background: var(--plum-mid);   /* fallback colour while image loads */
+    }
+    .memory-photo:hover {
+      transform: scale(1.025);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.55), 0 0 0 4px var(--gold);
+    }
+
+    /* Placeholder image frame shown when no src is set */
+    .photo-placeholder {
+      width: 100%; height: 280px;
+      background: linear-gradient(135deg, var(--plum-mid) 0%, #3a1228 100%);
+      border-radius: 16px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px;
+      border: 2px dashed rgba(212,168,67,0.4);
+      color: var(--gold);
+      font-size: 0.9rem;
+    }
+    .photo-placeholder span { font-size: 2.5rem; }
+
+    .slide-caption {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--blush-light);
+    }
+    .slide-date {
+      font-size: 0.82rem;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .carousel-controls {
+      display: flex; align-items: center; gap: 20px;
+      justify-content: center;
+      margin-top: 24px;
+    }
+    .carousel-btn {
+      background: var(--white-glass2);
+      backdrop-filter: var(--blur);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--text-light);
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .carousel-btn:hover { background: rgba(200,68,90,0.4); transform: scale(1.1); }
+    .carousel-dots { display: flex; gap: 8px; }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      transition: background 0.3s, transform 0.3s;
+      cursor: pointer;
+    }
+    .dot.active { background: var(--gold); transform: scale(1.35); }
+
+    .next-screen-btn { margin-top: 32px; }
+
+
+    /* ============================================================
+       SCREEN 3 — THE NABA CHALLENGE (QUIZ)
+    ============================================================ */
+    #screen-quiz { background: transparent; }
+    .quiz-header { text-align: center; margin-bottom: 8px; }
+    .quiz-progress-bar {
+      width: 100%; height: 6px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 3px;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+    .quiz-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--rose), var(--gold));
+      border-radius: 3px;
+      transition: width 0.5s ease;
+      will-change: width;
+    }
+    .quiz-question-num {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .quiz-question-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 3vw, 1.45rem);
+      color: var(--text-light);
+      margin-bottom: 24px;
+      line-height: 1.4;
+    }
+    .quiz-options {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .quiz-option {
+      background: var(--white-glass);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 14px;
+      padding: 14px 20px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.97rem;
+      color: var(--text-light);
+      text-align: left;
+      transition: background 0.22s, border-color 0.22s, transform 0.18s;
+      will-change: transform;
+    }
+    .quiz-option:hover:not(:disabled) {
+      background: rgba(200,68,90,0.22);
+      border-color: var(--rose);
+      transform: translateX(6px);
+    }
+    .quiz-option.correct {
+      background: rgba(100,200,120,0.25);
+      border-color: #6DC880;
+      color: #b6ffca;
+    }
+    .quiz-option.wrong {
+      background: rgba(200,68,90,0.25);
+      border-color: var(--rose);
+      opacity: 0.7;
+    }
+    .quiz-option:disabled { cursor: default; }
+
+    .quiz-feedback {
+      margin-top: 16px;
+      min-height: 28px;
+      font-size: 1rem;
+      text-align: center;
+      font-style: italic;
+      color: var(--blush);
+      transition: opacity 0.3s;
+    }
+
+    .quiz-score {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 0.88rem;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+    }
+
+
+    /* ============================================================
+       SCREEN 4 — GRAND FINALE (LOVE LETTER)
+    ============================================================ */
+    #screen-finale { background: transparent; }
+
+    .finale-top {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .finale-stamp {
+      font-size: 3rem;
+      display: inline-block;
+      animation: spin-slow 6s linear infinite;
+    }
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* ── Profile photo pair ── */
+    /* =========================================================
+       👇 REPLACE src="profile.jpg" with your couple photo!
+       ========================================================= */
+    .couple-photo-wrap {
+      display: flex; justify-content: center; margin: 28px 0;
+      position: relative;
+    }
+    .couple-photo {
+      width: 180px; height: 180px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid var(--gold);
+      box-shadow: 0 0 0 8px rgba(212,168,67,0.15), var(--shadow-rose);
+      display: block;
+      background: var(--plum-mid);
+    }
+    .couple-photo-placeholder {
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      border: 4px dashed var(--gold);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 6px;
+      color: var(--gold);
+      font-size: 0.8rem;
+      background: var(--plum-mid);
+    }
+    .couple-photo-placeholder span { font-size: 2rem; }
+
+    .love-letter-body {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      line-height: 1.85;
+      color: var(--blush-light);
+      text-align: center;
+      position: relative;
+    }
+
+    /* decorative quote marks */
+    .love-letter-body::before,
+    .love-letter-body::after {
+      content: '"';
+      font-size: 5rem;
+      color: rgba(212,168,67,0.2);
+      font-family: 'Playfair Display', serif;
+      line-height: 0;
+      position: absolute;
+    }
+    .love-letter-body::before { top: 28px; left: -12px; }
+    .love-letter-body::after  { bottom: -12px; right: -12px; }
+
+    .signature {
+      text-align: right;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-top: 28px;
+    }
+
+    /* ── Surprise button ── */
+    #btn-surprise {
+      display: block;
+      margin: 36px auto 0;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--rose) 100%);
+      color: var(--plum-dark);
+      border: none;
+      border-radius: 50px;
+      padding: 18px 48px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      cursor: pointer;
+      box-shadow: var(--shadow-gold);
+      transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+      will-change: transform;
+      animation: pulse-glow 2.4s ease-in-out infinite;
+    }
+    #btn-surprise:hover {
+      transform: translateY(-4px) scale(1.05);
+      filter: brightness(1.08);
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: var(--shadow-gold); }
+      50%       { box-shadow: 0 8px 48px rgba(212,168,67,0.7), 0 0 60px rgba(200,68,90,0.35); }
+    }
+
+    /* ── Floating hearts & notes spawned by surprise ── */
+    .floaty {
+      position: fixed;
+      pointer-events: none;
+      font-size: var(--fs, 1.6rem);
+      z-index: 9999;
+      will-change: transform, opacity;
+      animation: floatUp var(--dur3, 3.5s) ease-out forwards;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0) rotate(var(--rot0, -10deg)) scale(0.7); opacity: 1; }
+      70%  { opacity: 0.9; }
+      100% { transform: translateY(-85vh) rotate(var(--rot1, 15deg)) scale(1.2); opacity: 0; }
+    }
+
+    /* ── Confetti particle ── */
+    .confetti-piece {
+      position: fixed;
+      width: 10px; height: 10px;
+      pointer-events: none;
+      z-index: 9998;
+      will-change: transform, opacity;
+      border-radius: 2px;
+      animation: confettiFall var(--cfDur, 2.4s) ease-in forwards;
+    }
+    @keyframes confettiFall {
+      0%   { transform: translate(0,0) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translate(var(--cfX, 40px), 85vh) rotate(720deg) scale(0.5); opacity: 0; }
+    }
+
+    /* ── Unlock / success badge ── */
+    .unlock-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(109, 200, 128, 0.18);
+      border: 1px solid rgba(109,200,128,0.4);
+      border-radius: 50px;
+      padding: 8px 20px;
+      font-size: 0.88rem;
+      color: #b6ffca;
+      margin-bottom: 20px;
+    }
+
+    /* ── Screen enter animation ── */
+    .fade-slide-in {
+      animation: fadeSlideIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(32px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ============================================================
+       RESPONSIVE TWEAKS
+    ============================================================ */
+    @media (max-width: 540px) {
+      .glass-card { padding: 32px 22px; }
+      .login-btns { flex-direction: column; align-items: center; }
+    }
+
+    /* ── Reduced motion ── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.1ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Ambient starfield (generated via JS) ── -->
+  <div id="starfield"></div>
+
+  <!-- ── Ambient rose petals (generated via JS) ── -->
+  <div id="petals"></div>
+
+
+  <!-- ========================================================
+       SCREEN 1 — LOGIN GATE
+  ========================================================= -->
+  <section class="screen active fade-slide-in" id="screen-login" aria-label="Welcome gate">
+    <div class="glass-card" style="text-align:center;">
+      <span class="login-emoji">💌</span>
+      <h1 class="grad-text">Psst… a little something<br>is waiting for you.</h1>
+      <div class="divider"></div>
+      <h2 style="font-size:1.6rem; margin-bottom:8px;">Are you Talha's favourite person?</h2>
+      <p class="login-sub">Think carefully before you answer…</p>
+
+      <div class="login-btns">
+        <button class="btn-primary" id="btn-yes" onclick="goToMemory()">
+          💖 Yes, obviously!
+        </button>
+        <!-- The "No" button runs away on hover/mousemove -->
+        <button id="btn-no">
+          🙈 No…
+        </button>
+      </div>
+
+      <p style="margin-top:24px; font-size:0.82rem; color:var(--text-muted); font-style:italic;">
+        (The "No" button has been informed of its fate.)
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ========================================================
+       SCREEN 2 — MEMORY LANE CAROUSEL
+       👇 Add / remove .carousel-slide blocks to match your photos.
+          Each slide: one photo + caption + date.
+  ========================================================= -->
+  <section class="screen" id="screen-memory" aria-label="Memory lane">
+    <div class="memory-header fade-slide-in">
+      <h2 class="grad-text">Memory Lane</h2>
+      <div class="divider"></div>
+      <p style="text-align:center; max-width:480px; margin:0 auto;">
+        A few of my favourite frames — because every moment with you is worth keeping.
+      </p>
+    </div>
+
+    <div class="carousel-wrap fade-slide-in">
+      <div class="carousel-track" id="carousel-track">
+
+        <!-- ── SLIDE 1 ── Replace photo1.jpg with your actual file name -->
+        <div class="carousel-slide">
+          <img class="memory-photo"
+               src="photo1.jpg"
+               alt="Our first memory together"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          <div class="photo-placeholder" style="display:none;">
+            <span>📷</span>
+            <strong>photo1.jpg</strong>
+            <small>Place your photo here</small>
+          </div>
+          <p class="slide-caption">"The beginning of everything beautiful."</p>
+          <span class="slide-date">✦ Your First Date ✦</span>
+        </div>
+
+        <!-- ── SLIDE 2 ── Replace photo2.jpg -->
+        <div class="carousel-slide">
+          <img class="memory-photo"
+               src="photo2.jpg"
+               alt="A special moment"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          <div class="photo-placeholder" style="display:none;">
+            <span>📷</span>
+            <strong>photo2.jpg</strong>
+            <small>Place your photo here</small>
+          </div>
+          <p class="slide-caption">"Laughing with you is my favourite hobby."</p>
+          <span class="slide-date">✦ A Moment Worth A Thousand Words ✦</span>
+        </div>
+
+        <!-- ── SLIDE 3 ── Replace photo3.jpg -->
+        <div class="carousel-slide">
+          <img class="memory-photo"
+               src="photo3.jpg"
+               alt="Another cherished memory"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          <div class="photo-placeholder" style="display:none;">
+            <span>📷</span>
+            <strong>photo3.jpg</strong>
+            <small>Place your photo here</small>
+          </div>
+          <p class="slide-caption">"Time stops when I'm with you."</p>
+          <span class="slide-date">✦ One Of My Favourites ✦</span>
+        </div>
+
+        <!-- ── SLIDE 4 ── Replace photo4.jpg
+             (Add more slides by duplicating this block!) -->
+        <div class="carousel-slide">
+          <img class="memory-photo"
+               src="photo4.jpg"
+               alt="Us together"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          <div class="photo-placeholder" style="display:none;">
+            <span>📷</span>
+            <strong>photo4.jpg</strong>
+            <small>Place your photo here</small>
+          </div>
+          <p class="slide-caption">"Every picture of us is my wallpaper-worthy."</p>
+          <span class="slide-date">✦ Forever & Always ✦</span>
+        </div>
+
+      </div><!-- /carousel-track -->
+    </div><!-- /carousel-wrap -->
+
+    <!-- Carousel controls -->
+    <div class="carousel-controls">
+      <button class="carousel-btn" id="carousel-prev" aria-label="Previous">‹</button>
+      <div class="carousel-dots" id="carousel-dots"></div>
+      <button class="carousel-btn" id="carousel-next" aria-label="Next">›</button>
+    </div>
+
+    <button class="btn-primary next-screen-btn fade-slide-in" onclick="goToQuiz()">
+      Take The Challenge →
+    </button>
+  </section>
+
+
+  <!-- ========================================================
+       SCREEN 3 — THE NABA CHALLENGE (QUIZ)
+       👇 Customise questions & answers below as you like!
+  ========================================================= -->
+  <section class="screen" id="screen-quiz" aria-label="The Naba Challenge">
+    <div class="glass-card fade-slide-in" style="max-width:640px;">
+
+      <div class="quiz-header">
+        <h2 class="grad-text">The Naba Challenge 🎯</h2>
+        <div class="divider"></div>
+        <p style="text-align:center;">Prove you know us as well as I think you do…</p>
+      </div>
+
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="quiz-progress"></div>
+      </div>
+
+      <div id="quiz-container">
+        <p class="quiz-question-num" id="q-num">Question 1 of 5</p>
+        <p class="quiz-question-text" id="q-text">Loading…</p>
+        <div class="quiz-options" id="q-options"></div>
+        <p class="quiz-feedback" id="q-feedback"></p>
+        <p class="quiz-score" id="q-score"></p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================
+       SCREEN 4 — GRAND FINALE: THE LOVE LETTER
+       👇 Edit the letter text below to your own words!
+          Replace profile.jpg with your couple photo.
+  ========================================================= -->
+  <section class="screen" id="screen-finale" aria-label="Love letter">
+    <div class="glass-card fade-slide-in" style="max-width:640px; text-align:center;">
+
+      <div class="finale-top">
+        <div class="unlock-badge">🔓 Unlocked — well done, Naba!</div>
+        <h1 class="grad-text" style="font-size:clamp(1.8rem,5vw,3rem);">
+          A letter<br>for my favourite person
+        </h1>
+        <div class="divider"></div>
+      </div>
+
+      <!-- ── Couple / profile photo ──
+           👇 Replace "profile.jpg" with your actual couple photo file name -->
+      <div class="couple-photo-wrap">
+        <img class="couple-photo"
+             src="profile.jpg"
+             alt="Talha and Naba"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <div class="couple-photo-placeholder" style="display:none;">
+          <span>💑</span>
+          <strong>profile.jpg</strong>
+          <small>Your couple photo</small>
+        </div>
+      </div>
+
+      <!-- ── THE LOVE LETTER ──
+           👇 Replace this text with your own heartfelt words! -->
+      <p class="love-letter-body" id="love-letter-text">
+        Dear Naba,<br><br>
+        I have been looking for the right words for a while now —
+        and I still don't think any words could ever be enough.
+        You walked into my life and somehow made every ordinary moment
+        feel like it was worth writing down.<br><br>
+        You are the person I want to tell everything to.
+        The person whose laugh I could listen to on repeat forever.
+        The person who, without even trying, became my favourite part of every single day.<br><br>
+        I don't know what I did to deserve you in my life,
+        but whatever it was, I would do it a thousand times over.<br><br>
+        Thank you for being you. Thank you for being mine.
+      </p>
+
+      <p class="signature">— Talha 💛</p>
+
+      <!-- ── Surprise button ── -->
+      <button id="btn-surprise" onclick="triggerSurprise()">
+        ✨ Click for a Surprise ✨
+      </button>
+
+      <p style="margin-top:20px; font-size:0.82rem; color:var(--text-muted); font-style:italic;">
+        (You can click it more than once. I won't judge.)
+      </p>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    /* ============================================================
+       1. STARFIELD
+    ============================================================ */
+    (function buildStarfield() {
+      const sf = document.getElementById('starfield');
+      const count = 90;
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < count; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        const size = Math.random() * 2.2 + 0.6;
+        s.style.cssText = `
+          left:${Math.random()*100}%;
+          top:${Math.random()*100}%;
+          width:${size}px; height:${size}px;
+          --dur:${(Math.random()*4+2).toFixed(1)}s;
+          --delay:-${(Math.random()*6).toFixed(1)}s;
+        `;
+        frag.appendChild(s);
+      }
+      sf.appendChild(frag);
+    })();
+
+
+    /* ============================================================
+       2. AMBIENT ROSE PETALS
+    ============================================================ */
+    (function buildPetals() {
+      const container = document.getElementById('petals');
+      const symbols = ['🌸','🌹','💮','🌺','✿','❀'];
+      const count = 14;
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'petal';
+        p.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+        p.style.cssText = `
+          left:${Math.random()*100}%;
+          --size:${(Math.random()*1.2+0.8).toFixed(1)}rem;
+          --dur2:${(Math.random()*10+7).toFixed(1)}s;
+          --delay2:-${(Math.random()*12).toFixed(1)}s;
+        `;
+        frag.appendChild(p);
+      }
+      container.appendChild(frag);
+    })();
+
+
+    /* ============================================================
+       3. SCREEN 1 — "NO" BUTTON RUNS AWAY
+    ============================================================ */
+    const btnNo  = document.getElementById('btn-no');
+    const loginCard = btnNo.closest('.glass-card');
+    let noClickCount = 0;
+
+    function teleportNo(e) {
+      const rect = loginCard.getBoundingClientRect();
+      const padding = 24;
+      const bw = btnNo.offsetWidth, bh = btnNo.offsetHeight;
+      const maxX = rect.width  - bw - padding;
+      const maxY = rect.height - bh - padding;
+      const newX = Math.max(padding, Math.random() * maxX);
+      const newY = Math.max(padding, Math.random() * maxY);
+      btnNo.style.position   = 'absolute';
+      btnNo.style.left       = newX + 'px';
+      btnNo.style.top        = newY + 'px';
+      btnNo.style.transition = 'left 0.25s ease, top 0.25s ease, transform 0.25s ease, opacity 0.25s';
+      loginCard.style.position = 'relative';
+      noClickCount++;
+      if (noClickCount >= 5) {
+        // After 5 attempts, shrink it away entirely
+        btnNo.classList.add('shrinking');
+      }
+    }
+
+    btnNo.addEventListener('mouseover', teleportNo);
+    btnNo.addEventListener('touchstart', (e) => { e.preventDefault(); teleportNo(e); }, { passive: false });
+    btnNo.addEventListener('click', teleportNo);
+
+
+    /* ============================================================
+       4. SCREEN TRANSITIONS
+    ============================================================ */
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => {
+        s.classList.remove('active');
+        s.style.display = 'none';
+      });
+      const next = document.getElementById(id);
+      next.style.display = 'flex';
+      next.classList.add('active');
+      // Re-trigger fade animation
+      next.querySelectorAll('.fade-slide-in').forEach(el => {
+        el.style.animation = 'none';
+        el.offsetHeight; // reflow
+        el.style.animation = '';
+      });
+      window.scrollTo(0, 0);
+    }
+
+    function goToMemory() {
+      showScreen('screen-memory');
+      initCarousel();
+    }
+
+    function goToQuiz() {
+      showScreen('screen-quiz');
+      initQuiz();
+    }
+
+    function goToFinale() {
+      showScreen('screen-finale');
+    }
+
+
+    /* ============================================================
+       5. CAROUSEL
+    ============================================================ */
+    let carouselIndex = 0;
+    let carouselTotal = 0;
+    let carouselInitDone = false;
+
+    function initCarousel() {
+      if (carouselInitDone) return;
+      carouselInitDone = true;
+
+      const track  = document.getElementById('carousel-track');
+      const slides = track.querySelectorAll('.carousel-slide');
+      carouselTotal = slides.length;
+
+      const dotsWrap = document.getElementById('carousel-dots');
+      for (let i = 0; i < carouselTotal; i++) {
+        const d = document.createElement('button');
+        d.className = 'dot' + (i === 0 ? ' active' : '');
+        d.setAttribute('aria-label', 'Go to slide ' + (i+1));
+        d.addEventListener('click', () => goToSlide(i));
+        dotsWrap.appendChild(d);
+      }
+
+      document.getElementById('carousel-prev').addEventListener('click', () => {
+        goToSlide((carouselIndex - 1 + carouselTotal) % carouselTotal);
+      });
+      document.getElementById('carousel-next').addEventListener('click', () => {
+        goToSlide((carouselIndex + 1) % carouselTotal);
+      });
+
+      // Touch/swipe support
+      let touchStartX = 0;
+      const wrap = document.querySelector('.carousel-wrap');
+      wrap.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+      wrap.addEventListener('touchend', e => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) {
+          goToSlide(diff > 0
+            ? (carouselIndex + 1) % carouselTotal
+            : (carouselIndex - 1 + carouselTotal) % carouselTotal
+          );
+        }
+      });
+    }
+
+    function goToSlide(index) {
+      carouselIndex = index;
+      const track = document.getElementById('carousel-track');
+      track.style.transform = `translateX(-${index * 100}%)`;
+      document.querySelectorAll('.dot').forEach((d, i) => {
+        d.classList.toggle('active', i === index);
+      });
+    }
+
+
+    /* ============================================================
+       6. QUIZ
+       👇 Edit questions, options, and correctIndex here!
+          correctIndex is 0-based (0 = first option, 1 = second, etc.)
+          Add or remove question objects as you like.
+    ============================================================ */
+    const QUIZ_DATA = [
+      {
+        question: "What is Talha's absolute favourite thing about Naba?",
+        options: [
+          "Her contagious laugh",
+          "Her incredible brain",
+          "The way she cares about everyone",
+          "All of the above — honestly impossible to choose"
+        ],
+        correctIndex: 3,
+        successMsg: "Exactly right! How could it be anything else? 💛",
+        wrongMsg: "Close… but the answer is bigger than that! 😄"
+      },
+      {
+        question: "When Talha is having a tough day, who is the first person he wants to talk to?",
+        options: [
+          "His best friend",
+          "His mum",
+          "Naba, always Naba",
+          "Nobody — he sulks alone 😅"
+        ],
+        correctIndex: 2,
+        successMsg: "Obviously. You're his person. 💖",
+        wrongMsg: "Hint: it's the person reading this right now. 😉"
+      },
+      {
+        question: "Which word best describes what Naba means to Talha?",
+        options: ["Home 🏡", "Adventure 🌍", "Sunshine ☀️", "All three at once ✨"],
+        correctIndex: 3,
+        successMsg: "All three — perfectly said! 🌸",
+        wrongMsg: "Think bigger — she's not just one thing! ✨"
+      },
+      {
+        question: "What does Talha think every single time he sees Naba smile?",
+        options: [
+          "\"I'm so lucky.\"",
+          "\"There she goes again.\"",
+          "\"This is my favourite sight in the world.\"",
+          "Both A and C — every. single. time."
+        ],
+        correctIndex: 3,
+        successMsg: "Both A and C, always. 💕",
+        wrongMsg: "Try again — lucky AND favourite? Yes, both!"
+      },
+      {
+        question: "How long does Talha plan to keep making Naba feel this special?",
+        options: [
+          "A very long time",
+          "Until the stars burn out",
+          "Forever and then a little longer",
+          "There is no end date 💛"
+        ],
+        correctIndex: 3,
+        successMsg: "Correct — no expiry date on this one. 🌹",
+        wrongMsg: "Hint: there is no timeline small enough for this. 💛"
+      }
+    ];
+
+    let quizIndex  = 0;
+    let quizScore  = 0;
+    let quizAnswered = false;
+
+    function initQuiz() {
+      quizIndex = 0;
+      quizScore = 0;
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = QUIZ_DATA[quizIndex];
+      const total = QUIZ_DATA.length;
+
+      document.getElementById('q-num').textContent     = `Question ${quizIndex+1} of ${total}`;
+      document.getElementById('q-text').textContent    = q.question;
+      document.getElementById('q-feedback').textContent = '';
+      document.getElementById('q-score').textContent   = quizScore > 0 ? `Score: ${quizScore} / ${total}` : '';
+      document.getElementById('quiz-progress').style.width = `${((quizIndex) / total) * 100}%`;
+
+      const optWrap = document.getElementById('q-options');
+      optWrap.innerHTML = '';
+      quizAnswered = false;
+
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className    = 'quiz-option';
+        btn.textContent  = opt;
+        btn.addEventListener('click', () => handleAnswer(i));
+        optWrap.appendChild(btn);
+      });
+    }
+
+    function handleAnswer(selectedIndex) {
+      if (quizAnswered) return;
+      quizAnswered = true;
+
+      const q       = QUIZ_DATA[quizIndex];
+      const opts    = document.querySelectorAll('.quiz-option');
+      const isRight = selectedIndex === q.correctIndex;
+
+      opts.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === q.correctIndex) btn.classList.add('correct');
+        else if (i === selectedIndex && !isRight) btn.classList.add('wrong');
+      });
+
+      const feedback = document.getElementById('q-feedback');
+      feedback.textContent = isRight ? q.successMsg : q.wrongMsg;
+
+      if (isRight) {
+        quizScore++;
+        spawnConfetti();
+      }
+
+      // Auto-advance after a pause
+      setTimeout(() => {
+        quizIndex++;
+        if (quizIndex < QUIZ_DATA.length) {
+          renderQuestion();
+        } else {
+          // Quiz done — show final score then move to finale
+          const total = QUIZ_DATA.length;
+          document.getElementById('quiz-container').innerHTML = `
+            <div style="text-align:center; padding:16px 0;">
+              <div style="font-size:3.5rem; margin-bottom:12px;">🎉</div>
+              <h3 class="grad-text" style="font-size:1.8rem; margin-bottom:8px;">
+                You scored ${quizScore} / ${total}!
+              </h3>
+              <p style="color:var(--blush-light); margin-bottom:28px;">
+                ${quizScore === total
+                  ? "Perfect score! Talha is very impressed. 💛"
+                  : quizScore >= total * 0.6
+                    ? "Well done! You know us pretty well. 🌸"
+                    : "More dates are clearly needed! 😄"}
+              </p>
+              <button class="btn-primary" onclick="goToFinale()">
+                Open Your Letter 💌
+              </button>
+            </div>
+          `;
+          document.getElementById('quiz-progress').style.width = '100%';
+          spawnConfetti(true); // big burst at the end
+        }
+      }, 1800);
+    }
+
+
+    /* ============================================================
+       7. CONFETTI BURST
+    ============================================================ */
+    const CONFETTI_COLORS = ['#C8445A','#F2AEBB','#D4A843','#F5E09B','#FFFFFF','#8B1A2E'];
+
+    function spawnConfetti(big = false) {
+      const count = big ? 90 : 36;
+      const originX = window.innerWidth  / 2;
+      const originY = window.innerHeight / 2;
+
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'confetti-piece';
+        const angle  = (Math.random() * 360) * Math.PI / 180;
+        const dist   = Math.random() * 280 + 60;
+        const cfX    = Math.cos(angle) * dist;
+        const dur    = (Math.random() * 1.4 + 1.4).toFixed(2);
+        p.style.cssText = `
+          left:${originX + (Math.random()-0.5)*120}px;
+          top:${originY - 20}px;
+          background:${CONFETTI_COLORS[Math.floor(Math.random()*CONFETTI_COLORS.length)]};
+          --cfX:${cfX}px;
+          --cfDur:${dur}s;
+          border-radius:${Math.random() > 0.5 ? '50%' : '2px'};
+        `;
+        frag.appendChild(p);
+      }
+      document.body.appendChild(frag);
+      // Clean up after animation
+      setTimeout(() => {
+        document.querySelectorAll('.confetti-piece').forEach(el => el.remove());
+      }, big ? 3500 : 2800);
+    }
+
+
+    /* ============================================================
+       8. SURPRISE BUTTON — FLOATING HEARTS & MUSIC NOTES
+    ============================================================ */
+    const FLOATY_SYMBOLS = ['💖','💗','💕','💞','💓','🎵','🎶','🌸','✨','💫','🌹','💝'];
+    let surpriseCount = 0;
+
+    function triggerSurprise() {
+      surpriseCount++;
+      const count = 22 + surpriseCount * 4;
+      const frag  = document.createDocumentFragment();
+
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className  = 'floaty';
+        el.textContent = FLOATY_SYMBOLS[Math.floor(Math.random() * FLOATY_SYMBOLS.length)];
+        const startX  = Math.random() * window.innerWidth;
+        const startY  = Math.random() * window.innerHeight * 0.6 + window.innerHeight * 0.3;
+        const fs      = (Math.random() * 1.6 + 0.9).toFixed(1);
+        const dur     = (Math.random() * 2.5 + 2.5).toFixed(2);
+        const rot0    = (Math.random() * 30 - 15).toFixed(0) + 'deg';
+        const rot1    = (Math.random() * 30 - 15).toFixed(0) + 'deg';
+        el.style.cssText = `
+          left:${startX}px; top:${startY}px;
+          --fs:${fs}rem;
+          --dur3:${dur}s;
+          --rot0:${rot0}; --rot1:${rot1};
+          animation-delay:${(Math.random()*0.6).toFixed(2)}s;
+        `;
+        frag.appendChild(el);
+      }
+
+      document.body.appendChild(frag);
+      spawnConfetti();
+
+      // Change button text playfully after a few clicks
+      const btn = document.getElementById('btn-surprise');
+      const messages = [
+        '✨ Click for a Surprise ✨',
+        '💛 Again? Okay then! 💛',
+        '🌸 You really love this… 🌸',
+        '💖 Still going? Love it! 💖',
+        '🎉 Infinite love for you 🎉'
+      ];
+      btn.textContent = messages[Math.min(surpriseCount, messages.length - 1)];
+
+      setTimeout(() => {
+        document.querySelectorAll('.floaty').forEach(el => el.remove());
+      }, 6000);
+    }
+
+  </script>
+</body>
+</html>
